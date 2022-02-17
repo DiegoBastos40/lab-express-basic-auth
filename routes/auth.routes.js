@@ -8,16 +8,16 @@ const mongoose = require('mongoose')
 
 const User = require('../models/User.model');
 
-// GET route ==> to display the signup form to users
+// GET route ==> to display the signup form to user
 
 router.get('/signup', (req, res,next) => res.render('auth/signup'));
 
-router.get('/user.profile', (req, res,next) => res.render('users/user-profile'));
+router.get('/userProfile', (req, res,next) => res.render('user/user-profile'));
 
 router.get('/login', (req, res,next)=> res.render('auth/login'))
 
 router.get('/userProfile', (req, res,next) => {
-    res.render('users/user-profile', { userInSession: req.session.currentUser });
+    res.render('user/user-profile', { userInSession: req.session.currentUser });
   });
 
   router.post('/signup', (req, res, next) => {
@@ -45,12 +45,12 @@ router.get('/userProfile', (req, res,next) => {
         });
     })
     .then(userFromDb => {
-        res.redirect('users/user-profile')
+        res.redirect('userProfile')
     })
     .catch(error => {
         if (error instanceof mongoose.Error.ValidationError) {
             res.status(500).render('auth/signup', { errorMessage: error.message });
-        }else if(error.code === 11000){
+        }else if(error.code === 9000){
             res.status(500).render('auth/signup', {
                 errorMessage: 'Username or email are already in use. Please try again.'
             })
